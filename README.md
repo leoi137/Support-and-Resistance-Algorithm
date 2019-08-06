@@ -2,4 +2,4 @@
 Returns historical support and resistance levels.
 
 # FB Support and Resistance Graph
-![](Pictures/FB_SupportResistance.png)
+![FB_SupportResistance](https://user-images.githubusercontent.com/30024311/62507945-ca755d00-b7ba-11e9-99ed-99ee9b923e85.png)
