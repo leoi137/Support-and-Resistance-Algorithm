@@ -1,4 +1,4 @@
-# Support-and-Resistance-Algorithm v2
+# Support-and-Resistance-Algorithm v2 (March 8th, 2024 Update)
 An easy to use algorithm that returns historical support and resistance levels (swing highs and swing lows) in a graph and dataframe.
 
 v2 Updated, please see support_resistance.ipynb to see how to use.
