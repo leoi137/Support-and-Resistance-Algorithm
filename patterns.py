@@ -6,6 +6,16 @@ import matplotlib.pyplot as plt
 import mplfinance as mpf
 
 def get_swing_high_lows(ohlc, stdv_multiple = 3):
+    """
+    Calculate swing highs and lows from OHLC data.
+
+    Parameters:
+        - ohlc (DataFrame): DataFrame containing OHLC data with a 'close' column.
+        - stdv_multiple (int, optional): Standard deviation multiple for swing calculation (default: 3).
+
+    Returns:
+        Tuple: Tuple containing lists of swing highs and swing lows.
+    """
     swing_highs = []
     swing_lows = []
     kind = None
@@ -14,7 +24,8 @@ def get_swing_high_lows(ohlc, stdv_multiple = 3):
     # Rolling window needs to be shorter than your total data points
     close_stdv = np.log(ohlc['close'] / ohlc['close'].shift(1)).rolling(window=150).std().mean()*100
     pct_change = close_stdv * stdv_multiple
-    print(f"Swings = > {pct_change} %")
+    # print(f"Swings = > {pct_change} %")
+    
     # Loop through the list of close prices
     for i in tqdm(range(len(close_prices))):
         current_date = close_prices.index[i]
@@ -62,6 +73,16 @@ def get_swing_high_lows(ohlc, stdv_multiple = 3):
 
 # Concatenates price and swing dates into a DataFrame
 def ohlc_dates_to_prices_df(ohlc_df, dates_array):
+    """
+    Concatenate OHLC data with swing dates into a DataFrame.
+
+    Parameters:
+        - ohlc_df (DataFrame): DataFrame containing OHLC data.
+        - dates_array (array-like): Array-like object containing dates.
+
+    Returns:
+        DataFrame: Concatenated DataFrame containing OHLC data and swing dates.
+    """
     with_swing = []
 
     for index in ohlc_df.index:
@@ -75,12 +96,43 @@ def ohlc_dates_to_prices_df(ohlc_df, dates_array):
 
 # Define a small function to check if the levels are approximately the same
 def approx_same_level(price1, price2, tolerance=0.02):  # 2% tolerance, adjust as needed
+    """
+    Check if two prices are approximately the same.
+
+    Parameters:
+        - price1 (float): First price.
+        - price2 (float): Second price.
+        - tolerance (float, optional): Tolerance for equality (default: 0.02).
+
+    Returns:
+        bool: True if the prices are approximately the same, False otherwise.
+    """
     return abs(price1 - price2) / price1 <= tolerance
 
 def greater_than_level(price1, price2, tolerance=0.005):  # 0.5% tolerance, adjust as needed
+    """
+    Check if one price is greater than another by a certain tolerance.
+
+    Parameters:
+        - price1 (float): First price.
+        - price2 (float): Second price.
+        - tolerance (float, optional): Tolerance for comparison (default: 0.005).
+
+    Returns:
+        bool: True if price1 is greater than price2 by the specified tolerance, False otherwise.
+    """
     return abs(price1 - price2) / price1 >= tolerance
 
 def get_head_and_shoulders(swings_df):
+    """
+    Identify head and shoulders patterns from swing data.
+
+    Parameters:
+        - swings_df (DataFrame): DataFrame containing swing data.
+
+    Returns:
+        List: List of tuples containing indices of head and shoulders patterns.
+    """
     hns_patterns = []
     for i in range(4, len(swings_df)):
         left_shoulder = swings_df.iloc[i - 4]
@@ -108,10 +160,13 @@ def get_head_and_shoulders(swings_df):
 
 def plot_swing_close(data):
     """
-    Plots 'swing' as scatter points and 'close' as a line plot.
+    Plot 'swing' as scatter points and 'close' as a line plot.
 
     Parameters:
-    data (DataFrame): A pandas DataFrame with 'swing' and 'close' columns.
+        - data (DataFrame): DataFrame with 'swing' and 'close' columns.
+
+    Raises:
+        ValueError: If 'swing' or 'close' columns are not present in the data.
     """
     # Ensure that 'swing' and 'close' are present in the data
     if 'swing' not in data.columns or 'close' not in data.columns:
@@ -134,7 +189,14 @@ def plot_swing_close(data):
     plt.show()
 
 def plot_support_resistance_candlesticks(data, start, end):
-    
+    """
+    Plot candlestick chart with support and resistance levels.
+
+    Parameters:
+        - data (DataFrame): DataFrame containing OHLC data.
+        - start (int): Index of the start point.
+        - end (int): Index of the end point.
+    """
     candle_data = data[['open', 'high', 'low', 'close']][start:end]
     candle_data['open'] = candle_data.open.astype(float)
     candle_data['high'] = candle_data.high.astype(float)
@@ -152,10 +214,20 @@ def plot_support_resistance_candlesticks(data, start, end):
     #         mpf.make_addplot(all_df['Resistance'][start:end], type='scatter', markersize=250, marker='_', color='red')]
 
     # Plot using mplfinance
-    # mpf.plot(candle_data, type='candle', style='charles', figscale=1.5, xrotation=45, figsize=(18, 8))
     mpf.plot(candle_data, type='candle', style='charles', addplot=apds, figscale=1.5, xrotation=45, figsize=(18, 9))
 
 def ohlc_swings_df(ohlc_df, high_dates, low_dates):
+    """
+    Generate DataFrame with swing data from OHLC data.
+
+    Parameters:
+        - ohlc_df (DataFrame): DataFrame containing OHLC data.
+        - high_dates (array-like): Array-like object containing dates of swing highs.
+        - low_dates (array-like): Array-like object containing dates of swing lows.
+
+    Returns:
+        DataFrame: DataFrame containing swing data.
+    """
     # Initialize 'kind' as object type for mixed data types (strings and floats)
     ohlc_df = ohlc_df.copy()
     ohlc_df['kind'] = np.nan
