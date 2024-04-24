@@ -1,8 +1,8 @@
 # Support-and-Resistance-Algorithm v2
 This repository contains Python code for analyzing swing highs and lows in financial time series data.
-It is an easy to use algorithm that returns historical support and resistance levels (swing highs and swing lows) in a graph and dataframe.
+It is an easy to use algorithm that returns historical swing highs and swing lows in a graph and dataframe.
 
-Please see support_resistance.ipynb to see how to use.
+Please view [support_resistance.ipynb](https://github.com/leoi137/Support-and-Resistance-Algorithm/blob/master/support_resistance.ipynb) for instructions on using the algorithm.
 
 # Installation
 pip install -r requirements.txt
