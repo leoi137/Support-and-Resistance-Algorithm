@@ -2,6 +2,10 @@
 This repository contains Python code for analyzing swing highs and lows in financial time series data.
 It is an easy to use algorithm that returns historical swing highs and swing lows in a graph and dataframe.
 
+## Files
+    stock_data.py: Contains functions to retrieve historical stock data from Yahoo Finance.
+    patterns.py: Contains functions for identifying swing highs and lows, plotting them in candlesticks, and generating DataFrames of swing data.
+
 Please view [support_resistance.ipynb](https://github.com/leoi137/Support-and-Resistance-Algorithm/blob/master/support_resistance.ipynb) for instructions on using the algorithm.
 
 # Installation
